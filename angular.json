@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "websocket-front-demo"
+    }
+  },
+  "defaultProject": "websocket-front-demo",
+  "cli": {
+    "analytics": false
+  }
 }
