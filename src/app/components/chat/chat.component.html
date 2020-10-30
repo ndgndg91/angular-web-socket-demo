@@ -12,14 +12,14 @@
 <br>
 <mat-card>
   <mat-card-content>
-    <form>
+    <form [formGroup]="chatFormGroup">
       <fieldset>
         <label>
-          <input type="text" style="width: 17%;display: inline;">
-          &nbsp;&nbsp;
-          <input type="text" style="width: 80%;display: inline;">
+          <input type="text" [formControl]="writer" style="width: 15%;display: inline;">
+          &nbsp;
+          <input type="text" [formControl]="contents" style="width: 80%;display: inline;">
         </label>
-        <button>Enter</button>
+        <button (click)="sendMessage()">Enter</button>
       </fieldset>
     </form>
   </mat-card-content>
