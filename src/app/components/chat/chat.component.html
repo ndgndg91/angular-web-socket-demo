@@ -3,7 +3,7 @@
     <mat-card-title>Chat Area</mat-card-title>
     <mat-card-subtitle>Say Something!</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content *ngFor="let message of messages">
+  <mat-card-content *ngFor="let message of webSocketService.chatMessages">
     <mat-card>
       <mat-card-content>{{message.writer}} : {{message.contents}}</mat-card-content>
     </mat-card>

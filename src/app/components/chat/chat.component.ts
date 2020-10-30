@@ -1,29 +1,32 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ChatMessage} from '../../classes/chat-message';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {ChatErrorDialogComponent} from '../../dialogs/chat-error-dialog/chat-error-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import {WebSocketService} from '../../services/web-socket-service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
 
-  messages: ChatMessage[] = [];
   chatFormGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private dialog: MatDialog) {
+  constructor(private formBuilder: FormBuilder, private dialog: MatDialog, public webSocketService: WebSocketService) {
   }
 
   ngOnInit(): void {
-    this.messages.push(new ChatMessage('동길', '안녕!'));
-    this.messages.push(new ChatMessage('철수', '할루!'));
+    this.webSocketService.openWebSocket();
     this.chatFormGroup = this.formBuilder.group({
       writer: new FormControl('', [Validators.required]),
       contents: new FormControl('', [Validators.required])
     });
+  }
+
+  ngOnDestroy(): void {
+    this.webSocketService.closeWebSocket();
   }
 
   get writer(): any {
@@ -46,6 +49,9 @@ export class ChatComponent implements OnInit {
     }
 
     console.log(`${this.chatFormGroup.get('writer').value} : ${this.chatFormGroup.get('contents').value}`);
+    const chatMessage = new ChatMessage(this.chatFormGroup.get('writer').value, this.chatFormGroup.get('contents').value);
+    this.webSocketService.sendMessage(chatMessage);
+    this.chatFormGroup.reset();
   }
 
   getFormValidationErrors(): string {
