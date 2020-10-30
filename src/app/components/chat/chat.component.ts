@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ChatMessage} from '../../classes/chat-message';
 
 @Component({
   selector: 'app-chat',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatComponent implements OnInit {
 
+  messages: ChatMessage[] = [];
+
   constructor() { }
 
   ngOnInit(): void {
+    this.messages.push(new ChatMessage('동길', '안녕!'));
+    this.messages.push(new ChatMessage('철수', '할루!'));
   }
 
 }

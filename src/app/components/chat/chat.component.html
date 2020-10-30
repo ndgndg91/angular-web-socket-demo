@@ -1,1 +1,26 @@
-<h1>chat</h1>
+<mat-card style="width: 100%;height: 1000px;">
+  <mat-card-header>
+    <mat-card-title>Chat Area</mat-card-title>
+    <mat-card-subtitle>Say Something!</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content *ngFor="let message of messages">
+    <mat-card>
+      <mat-card-content>{{message.writer}} : {{message.contents}}</mat-card-content>
+    </mat-card>
+  </mat-card-content>
+</mat-card>
+<br>
+<mat-card>
+  <mat-card-content>
+    <form>
+      <fieldset>
+        <label>
+          <input type="text" style="width: 17%;display: inline;">
+          &nbsp;&nbsp;
+          <input type="text" style="width: 80%;display: inline;">
+        </label>
+        <button>Enter</button>
+      </fieldset>
+    </form>
+  </mat-card-content>
+</mat-card>

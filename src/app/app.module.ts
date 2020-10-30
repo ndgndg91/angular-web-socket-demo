@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule} from '@angular/material/card';
 
 import { ChatComponent } from './components/chat/chat.component';
 
@@ -20,6 +21,7 @@ import { ChatComponent } from './components/chat/chat.component';
     BrowserAnimationsModule,
     MatGridListModule,
     MatToolbarModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
