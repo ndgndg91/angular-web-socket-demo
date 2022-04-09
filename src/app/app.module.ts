@@ -16,6 +16,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ChatErrorDialogComponent } from './dialogs/chat-error-dialog/chat-error-dialog.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,14 @@ import { LoginComponent } from './components/login/login.component';
     MatCardModule,
     MatDialogModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        }
+      },
+    })
   ],
   entryComponents: [
     ChatErrorDialogComponent

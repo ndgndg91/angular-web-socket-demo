@@ -3,7 +3,7 @@ import {ChatMessage} from '../../classes/chat-message';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {ChatErrorDialogComponent} from '../../dialogs/chat-error-dialog/chat-error-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
-import {WebSocketService} from '../../services/web-socket-service';
+import {WebSocketService} from '../../services/chat/web-socket-service';
 
 @Component({
   selector: 'app-chat',
