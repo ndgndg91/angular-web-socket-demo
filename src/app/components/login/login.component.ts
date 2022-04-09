@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,17 +11,25 @@ export class LoginComponent implements OnInit {
 
   signInFormGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.signInFormGroup = this.formBuilder.group({
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required])
+      username: new FormControl('', [Validators.required, Validators.min(5), Validators.max(255)]),
+      password: new FormControl('', [Validators.required, Validators.min(6), Validators.max(100)])
     });
   }
 
   signIn(): void {
     console.log('loing clicked');
+    if (this.signInFormGroup.invalid) {
+      this.signInFormGroup.markAllAsTouched();
+    }
+
+    const username = this.signInFormGroup.get('username').value;
+    const password = this.signInFormGroup.get('password').value;
+    console.log(username, password);
+    this.authService.signIn(username, password);
   }
 
   get username(): any {
@@ -30,4 +39,5 @@ export class LoginComponent implements OnInit {
   get password(): any {
     return this.signInFormGroup.get('password');
   }
+
 }

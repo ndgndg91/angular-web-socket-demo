@@ -1,5 +1,12 @@
+<mat-toolbar>
+  &nbsp;&nbsp;&nbsp;
+  <span>Chat App</span>
+</mat-toolbar>
 
-<mat-card style="width: 500px; height: 300px">
+<mat-grid-list cols="3" rowHeight="100%">
+  <mat-grid-tile></mat-grid-tile>
+  <mat-grid-tile>
+<mat-card style="width: 500px; height: 350px">
   <mat-card-header>
     <mat-card-title>SIGN IN</mat-card-title>
   </mat-card-header>
@@ -7,11 +14,43 @@
     <form [formGroup]="signInFormGroup">
       <fieldset>
         <label>Username</label>
-          <input type="text" [formControl]="username">
+        <div style="height: 20px">
+        <div *ngIf="username.invalid && (username.dirty || username.touched)" style="color: red">
+
+          <div *ngIf="username.errors.required">
+            username must be required
+          </div>
+
+          <div *ngIf="username.errors.minlength">
+            username must be at least 5 characters long
+          </div>
+
+          <div *ngIf="username.errors.maxlength">
+            username must be at most 255 characters long
+          </div>
+        </div>
+        </div>
+        <input type="text" [formControl]="username">
       </fieldset>
       <fieldset>
         <label>Password</label>
-        <input type="text" [formControl]="password">
+        <div style="height: 20px">
+        <div *ngIf="password.invalid && (password.dirty || password.touched)" style="color: red">
+
+          <div *ngIf="password.errors.required">
+            password must be required
+          </div>
+
+          <div *ngIf="password.errors.minlength">
+            password must be at least 5 characters long
+          </div>
+
+          <div *ngIf="password.errors.maxlength">
+            password must be at most 255 characters long
+          </div>
+        </div>
+        </div>
+        <input type="password" [formControl]="password">
       </fieldset>
       <fieldset>
         <button (click)="signIn()">ENTER</button>
@@ -19,3 +58,5 @@
     </form>
   </mat-card-content>
 </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
