@@ -14,11 +14,15 @@ import { MatInputModule } from '@angular/material/input';
 
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatErrorDialogComponent } from './dialogs/chat-error-dialog/chat-error-dialog.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChatComponent
+    ChatComponent,
+    DashboardComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
