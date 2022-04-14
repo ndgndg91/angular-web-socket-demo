@@ -1,1 +1,17 @@
-<p>dashboard works!</p>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Age</th>
+    <th>Height</th>
+    <th>Location</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let room of chatRooms">
+    <td colspan="2">{{room.title}}</td>
+    <td>{{room.lastModifiedAt}}</td>
+    <td>{{room.createdAt}}</td>
+  </tr>
+  </tbody>
+</table>

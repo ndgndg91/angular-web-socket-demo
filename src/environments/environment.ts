@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  signInEndpoint: 'http://localhost:8080/apis/users/sign-in'
+  signInEndpoint: 'http://localhost:8080/apis/users/sign-in',
+  chatRoomsEndpoint: 'http://localhost:8080/apis/chat-rooms'
 };
 
 /*
