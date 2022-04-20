@@ -14,7 +14,8 @@ export class WebSocketService {
     this.webSocket = new WebSocket('ws://localhost:8080/chat');
 
     this.webSocket.onopen = (event) => {
-      console.log(`open : ${event}`);
+      console.log(`open`);
+      console.log(event);
     };
 
     this.webSocket.onmessage = (event) => {
@@ -24,6 +25,10 @@ export class WebSocketService {
 
     this.webSocket.onclose = (event) => {
       console.log(`close : ${event}`);
+    };
+
+    this.webSocket.onerror = (event) => {
+      console.error(event);
     };
   }
 

@@ -12,6 +12,7 @@
     <td colspan="2">{{room.title}}</td>
     <td>{{room.lastModifiedAt}}</td>
     <td>{{room.createdAt}}</td>
+    <td><a [routerLink]="['/chat/', room.id]">입장</a></td>
   </tr>
   </tbody>
 </table>

@@ -15,11 +15,12 @@
     <form [formGroup]="chatFormGroup">
       <fieldset>
         <label>
-          <input type="text" [formControl]="writer" style="width: 15%;display: inline;">
+          <input type="text" value="{{user.userName}}" [disabled]="true" style="width: 15%;display: inline;">
           &nbsp;
-          <input type="text" [formControl]="contents" style="width: 80%;display: inline;">
+          <input type="text" [formControl]="contents" style="width: 84%;display: inline;">
         </label>
         <button (click)="sendMessage()">Enter</button>
+
       </fieldset>
     </form>
   </mat-card-content>

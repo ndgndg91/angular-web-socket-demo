@@ -4,6 +4,10 @@ import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from 
 import {ChatErrorDialogComponent} from '../../dialogs/chat-error-dialog/chat-error-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {WebSocketService} from '../../services/chat/web-socket-service';
+import {AuthService} from '../../services/auth/auth.service';
+import {ActivatedRoute} from '@angular/router';
+import {User} from '../../classes/user';
+import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-chat',
@@ -12,25 +16,30 @@ import {WebSocketService} from '../../services/chat/web-socket-service';
 })
 export class ChatComponent implements OnInit, OnDestroy {
 
+  private roomId: string;
+  user: User;
   chatFormGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private dialog: MatDialog, public webSocketService: WebSocketService) {
+  constructor(private formBuilder: FormBuilder, private dialog: MatDialog, private authService: AuthService,
+              private activatedRoute: ActivatedRoute, private jwtHelperService: JwtHelperService,
+              public webSocketService: WebSocketService) {
   }
 
   ngOnInit(): void {
+    this.user = this.jwtHelperService.decodeToken<User>(localStorage.getItem('token'));
+    this.roomId = this.activatedRoute.snapshot.paramMap.get('id');
+    console.log(this.roomId);
+    console.log(this.user);
+    console.log(this.user.userName);
     this.webSocketService.openWebSocket();
+    // TODO : 입장 메세지, 퇴장 메세지 구현
     this.chatFormGroup = this.formBuilder.group({
-      writer: new FormControl('', [Validators.required]),
       contents: new FormControl('', [Validators.required])
     });
   }
 
   ngOnDestroy(): void {
     this.webSocketService.closeWebSocket();
-  }
-
-  get writer(): any {
-    return this.chatFormGroup.get('writer');
   }
 
   get contents(): any {
@@ -48,8 +57,8 @@ export class ChatComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log(`${this.chatFormGroup.get('writer').value} : ${this.chatFormGroup.get('contents').value}`);
-    const chatMessage = new ChatMessage(this.chatFormGroup.get('writer').value, this.chatFormGroup.get('contents').value);
+    console.log(`${this.user.userName} : ${this.chatFormGroup.get('contents').value}`);
+    const chatMessage = ChatMessage.chat(this.roomId, this.user.userName, this.chatFormGroup.get('contents').value);
     this.webSocketService.sendMessage(chatMessage);
     this.chatFormGroup.reset();
   }
@@ -60,10 +69,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
       const controlErrors: ValidationErrors = this.chatFormGroup.get(key).errors;
       if (controlErrors != null) {
-        Object.keys(controlErrors).forEach(keyError => {
-          if (key === 'writer') {
-            message += '작성자는 필수입니다! ';
-          }
+        Object.keys(controlErrors).forEach(() => {
           if (key === 'contents') {
             message += '내용은 필수입니다!';
           }
