@@ -9,7 +9,7 @@ export class ChatMessage {
     return new ChatMessage(roomId, writer, contents);
   }
 
-  public static leave(roomId: string, writer: string): ChatMessage {
+  public static exit(roomId: string, writer: string): ChatMessage {
     return new ChatMessage(roomId, writer, writer + ' left.');
   }
 

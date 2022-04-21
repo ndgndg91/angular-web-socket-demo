@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {ChatMessage} from '../../classes/chat-message';
+import {User} from '../../classes/user';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,14 @@ export class WebSocketService {
 
   constructor() { }
 
-  openWebSocket(): void {
+  openWebSocket(roomId: string, user: User): void {
     this.webSocket = new WebSocket('ws://localhost:8080/chat');
 
     this.webSocket.onopen = (event) => {
       console.log(`open`);
       console.log(event);
+      const chatMessage = ChatMessage.enter(roomId, user.userName);
+      this.webSocket.send(JSON.stringify(chatMessage));
     };
 
     this.webSocket.onmessage = (event) => {
@@ -25,6 +28,8 @@ export class WebSocketService {
 
     this.webSocket.onclose = (event) => {
       console.log(`close : ${event}`);
+      const chatMessage = ChatMessage.exit(roomId, user.userName);
+      this.webSocket.send(JSON.stringify(chatMessage));
     };
 
     this.webSocket.onerror = (event) => {
@@ -37,6 +42,7 @@ export class WebSocketService {
   }
 
   closeWebSocket(): void {
+    this.chatMessages = [];
     this.webSocket.close();
   }
 }

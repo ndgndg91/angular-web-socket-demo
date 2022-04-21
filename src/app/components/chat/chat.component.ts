@@ -5,7 +5,7 @@ import {ChatErrorDialogComponent} from '../../dialogs/chat-error-dialog/chat-err
 import {MatDialog} from '@angular/material/dialog';
 import {WebSocketService} from '../../services/chat/web-socket-service';
 import {AuthService} from '../../services/auth/auth.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {User} from '../../classes/user';
 import {JwtHelperService} from '@auth0/angular-jwt';
 
@@ -22,6 +22,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   constructor(private formBuilder: FormBuilder, private dialog: MatDialog, private authService: AuthService,
               private activatedRoute: ActivatedRoute, private jwtHelperService: JwtHelperService,
+              private router: Router,
               public webSocketService: WebSocketService) {
   }
 
@@ -31,8 +32,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     console.log(this.roomId);
     console.log(this.user);
     console.log(this.user.userName);
-    this.webSocketService.openWebSocket();
-    // TODO : 입장 메세지, 퇴장 메세지 구현
+    this.webSocketService.openWebSocket(this.roomId, this.user);
     this.chatFormGroup = this.formBuilder.group({
       contents: new FormControl('', [Validators.required])
     });
@@ -63,6 +63,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatFormGroup.reset();
   }
 
+  exit(): void {
+    this.user = this.jwtHelperService.decodeToken<User>(localStorage.getItem('token'));
+    this.roomId = this.activatedRoute.snapshot.paramMap.get('id');
+    this.webSocketService.sendMessage(ChatMessage.exit(this.roomId, this.user.userName));
+    this.webSocketService.closeWebSocket();
+    this.router.navigate(['dashboard']).then(r => console.log(r));
+  }
+
   getFormValidationErrors(): string {
     let message = '';
     Object.keys(this.chatFormGroup.controls).forEach(key => {
@@ -79,5 +87,4 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     return message;
   }
-
 }
